@@ -66,6 +66,13 @@ const TaskList = () => {
     }
   };
 
+  useEffect(() => {
+    const completeTask = tasks.filter((task) => {
+      return task.completed === true;
+    });
+    setCompletedTasks(completeTask);
+  }, [tasks]);
+
   const getTask = async (task) => {
     setFormData({ name: task.name, completed: false });
     setTaskID(task._id);
@@ -113,14 +120,17 @@ const TaskList = () => {
         Edit={Edit}
         updateTask={updateTask}
       />
-      <div className="flex-between">
-        <p>
-          <b>Total Tasks:</b> 0
-        </p>
-        <p>
-          <b>Completed Tasks:</b> 0
-        </p>
-      </div>
+      {tasks.length > 0 && (
+        <div className="flex-between">
+          <p>
+            <b>Total Tasks:</b> {tasks.length}
+          </p>
+          <p>
+            <b>Completed Tasks:</b> {completedTasks.length}
+          </p>
+        </div>
+      )}
+
       <hr />
       {Loading && (
         <div className="flex-center">
