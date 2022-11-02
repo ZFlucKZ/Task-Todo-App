@@ -72,6 +72,8 @@ body {
 }
 
 .task {
+  background-color: #ebebeb;
+  padding: 0.3rem 0.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
