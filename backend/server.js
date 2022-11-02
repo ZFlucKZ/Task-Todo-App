@@ -26,6 +26,16 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
+// Get/Read Data
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
