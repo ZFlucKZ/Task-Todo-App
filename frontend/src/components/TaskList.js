@@ -51,6 +51,7 @@ const TaskList = () => {
       await axios.post(`${URL}/api/tasks`, formData);
       toast.success('Task added successfully');
       setFormData({ ...formData, name: '' });
+      getTasks();
     } catch (error) {
       toast.error(error.message);
     }
@@ -82,6 +83,20 @@ const TaskList = () => {
       await axios.put(`${URL}/api/tasks/${taskID}`, formData);
       setFormData({ ...formData, name: '' });
       setEdit(false);
+      getTasks();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const setToComplete = async (task) => {
+    const newFormData = {
+      name: task.name,
+      completed: true,
+    };
+
+    try {
+      await axios.put(`${URL}/api/tasks/${task._id}`, newFormData);
       getTasks();
     } catch (error) {
       toast.error(error.message);
@@ -124,6 +139,7 @@ const TaskList = () => {
                 index={index}
                 deleteTask={deleteTask}
                 getTask={getTask}
+                setToComplete={setToComplete}
               />
             );
           })}

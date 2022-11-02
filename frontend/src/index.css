@@ -79,9 +79,22 @@ body {
   align-items: center;
   margin-bottom: 8px;
   border-radius: 5px;
+  border-left: 5px solid red;
 }
 
-.task p {
+.task-completed {
+  background-color: #ebebeb;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  border-left: 5px solid green;
+}
+
+.task p,
+.task-completed p {
   margin: 0;
 }
 
