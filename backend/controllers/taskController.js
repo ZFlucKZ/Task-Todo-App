@@ -48,9 +48,27 @@ const deleteTask = async (req, res) => {
   }
 };
 
+// Update a task
+const updateTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createTask,
   getTasks,
   getTask,
   deleteTask,
+  updateTask,
 };
