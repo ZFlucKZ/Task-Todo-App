@@ -10,6 +10,8 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [Loading, setLoading] = useState(false);
+  const [Edit, setEdit] = useState(false);
+  const [taskID, setTaskID] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -63,6 +65,29 @@ const TaskList = () => {
     }
   };
 
+  const getTask = async (task) => {
+    setFormData({ name: task.name, completed: false });
+    setTaskID(task._id);
+    setEdit(true);
+  };
+
+  const updateTask = async (e) => {
+    e.preventDefault();
+
+    if (name === '') {
+      return toast.error('Input field cannot be empty.');
+    }
+
+    try {
+      await axios.put(`${URL}/api/tasks/${taskID}`, formData);
+      setFormData({ ...formData, name: '' });
+      setEdit(false);
+      getTasks();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className="task-list">
       <h1 className="title">Task to do List</h1>
@@ -70,6 +95,8 @@ const TaskList = () => {
         name={name}
         handleInputChange={handleInputChange}
         createTask={createTask}
+        Edit={Edit}
+        updateTask={updateTask}
       />
       <div className="flex-between">
         <p>
@@ -96,6 +123,7 @@ const TaskList = () => {
                 task={task}
                 index={index}
                 deleteTask={deleteTask}
+                getTask={getTask}
               />
             );
           })}
