@@ -9,12 +9,14 @@ const {
 const Task = require('../models/taskSchema');
 const router = express.Router();
 
-// Create a Task
-router.post('/api/tasks', createTask);
-// Get/Read Data
-router.get('/api/tasks', getTasks);
-router.get('/api/tasks/:id', getTask);
-router.delete('/api/tasks/:id', deleteTask);
-router.patch('/api/tasks/:id', updateTask);
+router.route('/').get(getTasks).post(createTask);
+
+router.route('/:id').get(getTask).put(updateTask).delete(deleteTask);
+
+// router.post('/', createTask);
+// router.get('/', getTasks);
+// router.get('/:id', getTask);
+// router.delete('/:id', deleteTask);
+// router.put('/:id', updateTask);
 
 module.exports = router;
