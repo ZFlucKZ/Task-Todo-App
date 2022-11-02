@@ -77,6 +77,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
+  border-radius: 5px;
 }
 
 .task p {
@@ -91,4 +93,16 @@ body {
 
 .task-icons>* {
   cursor: pointer;
+}
+
+.flex-center {
+  position: fixed;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+}
+
+.flex-center img {
+  /* background: none; */
+  width: 100px;
+  height: 100px;
 }

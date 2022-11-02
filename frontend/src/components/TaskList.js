@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Task from './Task';
 import TaskForm from './TaskForm';
 import axios from 'axios';
+import { URL } from '../App';
+import loaderImg from '../assets/loader.gif';
 
 const TaskList = () => {
+  const [tasks, setTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [Loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     completed: false,
@@ -16,6 +22,22 @@ const TaskList = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const getTasks = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`${URL}/api/tasks`);
+      setTasks(data);
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getTasks();
+  }, []);
+
   const createTask = async (e) => {
     e.preventDefault();
 
@@ -24,7 +46,7 @@ const TaskList = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/tasks', formData);
+      await axios.post(`${URL}/api/tasks`, formData);
       toast.success('Task added successfully');
       setFormData({ ...formData, name: '' });
     } catch (error) {
@@ -49,7 +71,20 @@ const TaskList = () => {
         </p>
       </div>
       <hr />
-      <Task />
+      {Loading && (
+        <div className="flex-center">
+          <img src={loaderImg} alt="Loading" />
+        </div>
+      )}
+      {!Loading && tasks.length === 0 ? (
+        <p className="no-task">No task added.</p>
+      ) : (
+        <>
+          {tasks.map((task, index) => {
+            return <Task key={task.id} task={task} index={index} />;
+          })}
+        </>
+      )}
     </div>
   );
 };
